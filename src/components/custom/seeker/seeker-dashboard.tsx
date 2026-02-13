@@ -3,6 +3,9 @@
 import Image from "next/image";
 import {
   BadgeCheck,
+import {
+  BadgeCheck,
+  Briefcase,
   Brush,
   Building2,
   CalendarDays,
@@ -17,6 +20,13 @@ import {
   Sparkles,
   Star,
   TrendingUp,
+  Home,
+  MapPin,
+  MessageCircle,
+  Mic,
+  Search,
+  Sparkles,
+  Star,
   User,
   Wrench,
 } from "lucide-react";
@@ -41,6 +51,7 @@ type Promo = {
   subtitle: string;
   cta: string;
   image: string;
+  color: string;
 };
 
 const categories: Category[] = [
@@ -61,6 +72,7 @@ const providers: Provider[] = [
     rating: "4.9",
     badge: "Top Rated",
     image: "/seeker/provider-mia.svg",
+    color: "from-violet-500 to-indigo-600",
   },
   {
     name: "Carlo Dela Cruz",
@@ -70,6 +82,7 @@ const providers: Provider[] = [
     rating: "4.8",
     badge: "Verified",
     image: "/seeker/provider-carlo.svg",
+    color: "from-blue-500 to-cyan-600",
   },
   {
     name: "Anne Rivera",
@@ -79,6 +92,7 @@ const providers: Provider[] = [
     rating: "5.0",
     badge: "Trusted Pro",
     image: "/seeker/provider-anne.svg",
+    color: "from-fuchsia-500 to-violet-600",
   },
   {
     name: "Jules Fernandez",
@@ -104,6 +118,16 @@ const promos: Promo[] = [
     cta: "Explore creatives",
     image: "/seeker/promo-creative.svg",
   },
+    color: "from-indigo-500 to-slate-700",
+  },
+];
+
+const bottomNav = [
+  { label: "Home", icon: Home, active: true },
+  { label: "Search", icon: Search, active: false },
+  { label: "Bookings", icon: Briefcase, active: false },
+  { label: "Messages", icon: MessageCircle, active: false },
+  { label: "Profile", icon: User, active: false },
 ];
 
 export function SeekerDashboard() {
@@ -155,6 +179,9 @@ export function SeekerDashboard() {
           <button className="text-xs font-semibold text-violet-700">See all</button>
         </div>
 
+      </section>
+
+      <section className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
         <div className="grid grid-cols-3 gap-3">
           {categories.map((category) => {
             const Icon = category.icon;
@@ -209,6 +236,14 @@ export function SeekerDashboard() {
                   </span>
                 </div>
                 <p className="absolute bottom-2 left-2 text-xs text-white/95">{provider.eta}</p>
+              <div className={`h-28 rounded-2xl bg-gradient-to-br ${provider.color} p-3 text-white`}>
+                <div className="flex items-start justify-between">
+                  <span className="rounded-full bg-white/20 px-2 py-1 text-[10px] font-semibold">{provider.badge}</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-black/20 px-2 py-1 text-[10px] font-semibold">
+                    <Star className="h-3 w-3 fill-amber-300 text-amber-300" /> {provider.rating}
+                  </span>
+                </div>
+                <p className="mt-8 text-xs text-white/90">{provider.eta}</p>
               </div>
 
               <div className="mt-3">
@@ -288,6 +323,25 @@ export function SeekerDashboard() {
           <h3 className="mt-1 text-xl font-bold">Need urgent home help tonight?</h3>
           <p className="mt-1 text-sm text-slate-200">Chat with verified providers and get ETA in minutes.</p>
           <button className="mt-3 rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-900">Start chat</button>
+        </div>
+      </section>
+
+      <section className="fixed bottom-3 left-1/2 z-20 w-[calc(100%-1.5rem)] max-w-[398px] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur">
+        <div className="grid grid-cols-5 gap-1">
+          {bottomNav.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.label}
+                className={`flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-medium ${
+                  item.active ? "bg-violet-600 text-white" : "text-slate-500"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </section>
     </div>
