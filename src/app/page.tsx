@@ -77,13 +77,13 @@ const seekerView = {
   gigs: [
     {
       title: "On-demand Plumber",
-      meta: "Makati • 1.2km • Available in 45 mins",
+      meta: "Makati â€¢ 1.2km â€¢ Available in 45 mins",
       price: "From PHP 850",
       rating: "4.9",
     },
     {
       title: "UX Portfolio Coach",
-      meta: "Remote • Verified mentor",
+      meta: "Remote â€¢ Verified mentor",
       price: "From PHP 1,500",
       rating: "4.8",
     },
