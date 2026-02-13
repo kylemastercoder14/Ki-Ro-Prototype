@@ -3,16 +3,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, Briefcase, Building2, Shield } from "lucide-react";
+import { Home, Search, Briefcase, Building2, Shield, MessageCircle, User } from "lucide-react";
 import { getUser } from "@/lib/auth-mock";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type Tab = { href: string; label: string; icon: any };
 
 const seekerTabs: Tab[] = [
-  { href: "/seeker", label: "Home", icon: Home },
-  { href: "/seeker?tab=search", label: "Search", icon: Search },
+  { href: "/dashboard", label: "Home", icon: Home },
+  { href: "/dashboard/search", label: "Search", icon: Search },
+  { href: "/dashboard/bookings", label: "Bookings", icon: Briefcase },
+  { href: "/dashboard/messages", label: "Messages", icon: MessageCircle },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
 const providerTabs: Tab[] = [
@@ -25,17 +27,11 @@ const partnerTabs: Tab[] = [
   { href: "/partner?tab=leads", label: "Leads", icon: Search },
 ];
 
-const adminTabs: Tab[] = [
-  { href: "/admin", label: "Admin", icon: Shield },
-];
+const adminTabs: Tab[] = [{ href: "/admin", label: "Admin", icon: Shield }];
 
 export function BottomTabs() {
   const pathname = usePathname();
-  const [role, setRole] = useState<string | null>(null);
-
-  useEffect(() => {
-    setRole(getUser()?.role ?? null);
-  }, [pathname]);
+  const role = getUser()?.role ?? null;
 
   if (!role) return null;
 
@@ -50,10 +46,11 @@ export function BottomTabs() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="mx-auto w-full max-w-[430px] border-t bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-        <div className="grid grid-cols-2 gap-1 p-2">
+      <div className="mx-auto w-full max-w-[430px] border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="grid gap-1 p-2" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
           {tabs.map((t) => {
-            const active = pathname.startsWith(t.href.split("?")[0]);
+            const base = t.href.split("?")[0];
+            const active = base === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(base);
             const Icon = t.icon;
             return (
               <Link
@@ -61,9 +58,7 @@ export function BottomTabs() {
                 href={t.href}
                 className={cn(
                   "flex flex-col items-center justify-center gap-1 rounded-xl py-2 text-xs",
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                  active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"
                 )}
               >
                 <Icon className="h-5 w-5" />
